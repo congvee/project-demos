@@ -18,14 +18,22 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      # 1 拉取代码到环境中
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      # 2 装 pnpm
+      - uses: pnpm/action-setup@v4   # 官方动作，快速装 pnpm
+        with:
+          version: 10                 # 或锁定你项目里的版本
+
+      # 3 装 Node 并缓存 pnpm store
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
           cache-dependency-path: github-actions-deploy-vue3-to-github-page/pnpm-lock.yaml
 
+      # 4 安装 & 构建
       - name: Install & Build
         working-directory: github-actions-deploy-vue3-to-github-page          # 进入子目录
         run: |
