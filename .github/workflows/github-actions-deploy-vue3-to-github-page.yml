@@ -1,0 +1,41 @@
+name: Deploy github-actions-deploy-vue3-to-github-page to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths: ["github-actions-deploy-vue3-to-github-page/**"]   # 仅当 vue3-hello 目录有改动才触发
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: github-actions-deploy-vue3-to-github-page/pnpm-lock.json
+
+      - name: Install & Build
+        working-directory: vue3-hello          # 进入子目录
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./github-actions-deploy-vue3-to-github-page/dist             # 产物目录
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
