@@ -46,10 +46,16 @@ jobs:
           ls -la ./github-actions-deploy-vue3-to-github-page
           ls -la ./github-actions-deploy-vue3-to-github-page/dist || echo "❌ dist still missing"
 
+      - name: 创建子目录层级
+        run: |
+          mkdir -p deploy/github-actions-deploy-vue3-to-github-page
+          cp -r github-actions-deploy-vue3-to-github-page/dist/* \
+                deploy/github-actions-deploy-vue3-to-github-page/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./github-actions-deploy-vue3-to-github-page/dist             # 产物目录
+          path: ./deploy          # 产物目录
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
