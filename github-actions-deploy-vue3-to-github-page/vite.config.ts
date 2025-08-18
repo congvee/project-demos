@@ -6,7 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/project-demos/',
+  base: '/project-demos/github-actions-deploy-vue3-to-github-page/',
   plugins: [
     vue(),
     vueDevTools(),
