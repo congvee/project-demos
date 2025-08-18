@@ -39,8 +39,7 @@ jobs:
         run: |
           pnpm install --frozen-lockfile   # 等价于 npm ci
           pnpm build
-
-        run: ls -la ./github-actions-deploy-vue3-to-github-page/dist
+          ls -la ./github-actions-deploy-vue3-to-github-page/dist
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
