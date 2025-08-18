@@ -39,7 +39,12 @@ jobs:
         run: |
           pnpm install --frozen-lockfile   # 等价于 npm ci
           pnpm build
-          ls -la ./github-actions-deploy-vue3-to-github-page/dist
+
+      - name: Debug dist
+        run: |
+          echo "=== after build ==="
+          ls -la ./github-actions-deploy-vue3-to-github-page
+          ls -la ./github-actions-deploy-vue3-to-github-page/dist || echo "❌ dist still missing"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
