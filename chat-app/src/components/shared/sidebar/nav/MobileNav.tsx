@@ -8,6 +8,7 @@ import { useNavigation } from "@/hooks/useNavigation"
 import { UserButton } from "@clerk/nextjs";
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/ui/theme/theme-toggle";
 
 export default function MobileNav() {
   const paths = useNavigation();
@@ -41,6 +42,9 @@ export default function MobileNav() {
             );
           })
         }
+        <li>
+          <ThemeToggle />
+        </li>
         <li>
           <UserButton />
         </li>

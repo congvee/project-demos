@@ -7,6 +7,7 @@ import { useNavigation } from "@/hooks/useNavigation"
 import { UserButton } from "@clerk/nextjs";
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/ui/theme/theme-toggle";
 
 export default function DesktopNav() {
   const paths = useNavigation();
@@ -37,6 +38,7 @@ export default function DesktopNav() {
       </ul>
     </nav>
     <div className=" flex flex-col items-center gap-4">
+      <ThemeToggle />
       <UserButton />
     </div>
   </Card>
