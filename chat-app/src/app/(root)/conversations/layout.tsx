@@ -28,6 +28,7 @@ export default function ConversationsLayout({children} : {children: React.ReactN
                 name={conversation.conversation.name || ""}
                 lastMessageSender={conversation.lastMessage?.sender}
                 lastMessageContent={conversation.lastMessage?.content}
+                unseenCount={conversation.unseenCOunt}
               />
             ) : (
               <DMConversationItem 
@@ -37,6 +38,7 @@ export default function ConversationsLayout({children} : {children: React.ReactN
                 username={conversation.otherMember?.username || ""}
                 lastMessageSender={conversation.lastMessage?.sender}
                 lastMessageContent={conversation.lastMessage?.content}
+                unseenCount={conversation.unseenCOunt}
               />
             );
           })
