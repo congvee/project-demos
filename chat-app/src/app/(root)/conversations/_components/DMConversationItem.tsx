@@ -8,12 +8,16 @@ interface Props {
   id: Id<"conversations">;
   imageUrl: string;
   username: string;
+  lastMessageSender?: string;
+  lastMessageContent?: string;
 }
 
 export default function DMConversationItem({
   id,
   imageUrl,
-  username
+  username,
+  lastMessageContent,
+  lastMessageSender
 }: Props) {
 
   return <Link href={`/conversations/${id}`} className=" w-full">
@@ -27,9 +31,19 @@ export default function DMConversationItem({
         </Avatar>
         <div className=" flex flex-col truncate">
           <h4 className=" truncate"> {username} </h4>
-          <p className=" text-sm text-muted-foreground">
+          {lastMessageSender && lastMessageContent ? (
+            <span className=" text-sm text-muted-foreground flex truncate overflow-ellipsis">
+              <p className=" font-semibold">
+                {lastMessageSender}
+                {":"}&nbsp;
+              </p>
+              <p className=" truncate overflow-ellipsis">
+                {lastMessageContent}
+              </p>
+            </span>
+          ) : <p className=" text-sm text-muted-foreground">
             Start the conversation!
-          </p>
+          </p>}
         </div>
       </div>
     </Card>

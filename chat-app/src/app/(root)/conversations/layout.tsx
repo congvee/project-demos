@@ -25,6 +25,8 @@ export default function ConversationsLayout({children} : {children: React.ReactN
                 id={conversation.conversation._id}
                 imageUrl={conversation.otherMember?.imageUrl || ""}
                 username={conversation.otherMember?.username || ""}
+                lastMessageSender={conversation.lastMessage?.sender}
+                lastMessageContent={conversation.lastMessage?.content}
               />
             );
           })
