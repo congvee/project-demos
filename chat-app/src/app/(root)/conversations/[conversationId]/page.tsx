@@ -10,6 +10,8 @@ import Body from "./_components/body/Body";
 import ChatInput from "./_components/input/ChatInput";
 import { use, useState } from "react";
 import RemoveFriendDialog from "./_components/dialogs/RemoveFriendDialog";
+import DeleteGroupDialog from "./_components/dialogs/DeleteGroupDialog";
+import LeaveGroupDialog from "./_components/dialogs/LeaveGroupDialog";
 
 interface Props {
   params: Promise<{ conversationId: Id<"conversations"> }>
@@ -44,9 +46,21 @@ export default function ConversationPage({
           setOpen={setRemoveFriendDialogOpen}
         />
 
+        <DeleteGroupDialog
+          conversationId={conversationId}
+          open={deleteGroupDialogOpen}
+          setOpen={setDeleteGroupDialogOpen}
+        />
+
+        <LeaveGroupDialog
+          conversationId={conversationId}
+          open={leaveGroupDialogOpen}
+          setOpen={setLeaveGroupDialogOpen}
+        />
+
         <Header
-          name={(conversation.isGroup ? conversation.name : conversation.otherMember.username) || ""}
-          imageUrl={conversation.isGroup ? undefined : conversation.otherMember.imageUrl}
+          name={(conversation.isGroup ? conversation.name : conversation?.otherMember?.username) || ""}
+          imageUrl={conversation.isGroup ? undefined : conversation?.otherMember?.imageUrl}
           options={conversation.isGroup ? [{
             label: "Leave group",
             destructive: false,
