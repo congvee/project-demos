@@ -5,13 +5,77 @@ import { useQuery } from "convex/react";
 import { api } from "../../../../../../../convex/_generated/api";
 import { Id } from "../../../../../../../convex/_generated/dataModel";
 import Message from "./Message";
+import { userMutationState } from "@/hooks/useMutationState";
+import { useEffect } from "react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-export default function Body() {
+interface Props {
+  members: {
+    lastSeenMessageId?: Id<"messages">;
+    username?: string;
+    [key: string]: any;
+  }[]
+}
+
+export default function Body({
+  members
+}: Props) {
   const { conversationId } = useConversation();
 
   const messages = useQuery(api.messages.get, {
     id: conversationId as Id<"conversations">
   })
+
+  const { mutate: markRead, pending } = userMutationState(api.conversation.markRead);
+
+  useEffect(() => {
+    if (messages && members.length > 0) {
+      markRead({
+        conversationId,
+        messageId: messages[0]?.message._id
+      })
+    }
+  }, [messages?.length, conversationId, markRead]);
+
+  function formatSeenBy(names: string[]) {
+    switch(names.length) {
+      case 1:
+        return <p className=" text-muted-foreground text-sm text-right">
+          {`Seen by ${names[0]}`}
+        </p>;
+      case 2:
+        return <p className=" text-muted-foreground text-sm text-right">
+          {`Seen by ${names[0]} and ${names[1]}`}
+        </p>;
+      default:
+        return <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <p className=" text-muted-foreground text-sm text-right">
+                {`Seen by ${names[0]}, ${names[1]}, and ${names[names.length - 2]} more`}
+              </p>
+            </TooltipTrigger>
+            <TooltipContent>
+              <ul>
+                {names.map((name, index) => {
+                  return <li key={index}>
+                    {name}
+                  </li>
+                })}
+              </ul>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+    }
+  }
+
+  function getSeenMessage(messageId: Id<"messages">) {
+    const seenUsers = members.filter(member => member.lastSeenMessageId === messageId).map(user => user.username!.split(" ")[0]);
+
+    if (seenUsers.length === 0) return undefined;
+
+    return formatSeenBy(seenUsers);
+  }
 
   return <div className=" flex-1 w-full flex overflow-y-scroll flex-col-reverse gap-2 p-3 no-scrollbar">
     {messages?.map(({
@@ -21,6 +85,9 @@ export default function Body() {
       isCUrrentUser
     }, index) => {
       const lastByUser = messages[index - 1]?.message.senderId === messages[index]?.message.senderId;
+      
+      const seenMessage = isCUrrentUser ? getSeenMessage(message._id) : undefined;
+
       return <Message
         key={message._id}
         senderImage={senderImage}
@@ -30,6 +97,7 @@ export default function Body() {
         createdAt={message._creationTime}
         content={message.content}
         type={message.type}
+        seen={seenMessage}
       />
     })}
   </div>
