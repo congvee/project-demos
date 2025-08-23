@@ -22,6 +22,7 @@ export default function Request({
   email
 }: Props) {
   const {mutate: denyRequest, pending: denyPending} = userMutationState(api.request.deny);
+  const {mutate: acceptRequest, pending: acceptPending} = userMutationState(api.request.accept);
 
 
   return <Card className=" w-full p-2 flex flex-row items-center justify-between gap-2">
@@ -43,7 +44,17 @@ export default function Request({
     </div>
 
     <div className=" flex items-center gap-2">
-      <Button size="icon" disabled={denyPending} onClick={() => {}}>
+      <Button size="icon" disabled={denyPending} onClick={() => {
+        acceptRequest({id})
+          .then(() => {
+            toast.success("Friend request accepted")
+          })
+          .catch((error) => {
+            toast.error(
+              error instanceof ConvexError ? error.data : "Unexpected error occurred"
+            )
+          });
+      }}>
         <Check />
       </Button>
       <Button size="icon" disabled={denyPending} variant="destructive" onClick={() => {
