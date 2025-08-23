@@ -8,6 +8,7 @@ import { UserButton } from "@clerk/nextjs";
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ui/theme/theme-toggle";
+import { Badge } from "@/components/ui/badge";
 
 export default function DesktopNav() {
   const paths = useNavigation();
@@ -22,12 +23,15 @@ export default function DesktopNav() {
                 <Link href={path.href}>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button size="icon" variant={path.active ? "default" : "outline"}>
-                        {path.icon}
-                      </Button>
+                      <div>
+                        <Button size="icon" variant={path.active ? "default" : "outline"}>
+                          {path.icon}
+                        </Button>
+                        {path.count ? <Badge className=" absolute left-6 bottom-7 px-2">{path.count}</Badge> : null}
+                      </div>
                     </TooltipTrigger>
                     <TooltipContent>
-                      {path.name}
+                      <p>{path.name}</p>
                     </TooltipContent>
                   </Tooltip>
                 </Link>
