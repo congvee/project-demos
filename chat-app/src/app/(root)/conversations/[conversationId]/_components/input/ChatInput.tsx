@@ -2,14 +2,13 @@
 
 import { Card } from "@/components/ui/card";
 import { useConversation } from "@/hooks/useConversation";
-import { userMutationState } from "@/hooks/useMutationState";
+import { useMutationState } from "@/hooks/useMutationState";
 import z from "zod";
 import { api } from "../../../../../../../convex/_generated/api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { ConvexError } from "convex/values";
-import { useRef } from "react";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "@/components/ui/button";
@@ -22,11 +21,9 @@ const chatMessageSchema = z.object({
 })
 
 export default function ChatInput() {
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
   const { conversationId } = useConversation();
 
-  const { mutate: createMessage, pending } = userMutationState(api.message.create);
+  const { mutate: createMessage, pending } = useMutationState(api.message.create);
 
   const form = useForm<z.infer<typeof chatMessageSchema>>({
     resolver: zodResolver(chatMessageSchema),
@@ -47,8 +44,8 @@ export default function ChatInput() {
     })
   }
 
-  function handleInputChange(event: any) {
-    const {value, selectionStart} = event.target;
+  function handleInputChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    const {value, selectionStart} = event.target as HTMLTextAreaElement;
 
     if (selectionStart !== null) {
       form.setValue("content", value);
@@ -67,7 +64,7 @@ export default function ChatInput() {
                   maxRows={3}
                   {...field}
                   onChange={handleInputChange}
-                  onClick={handleInputChange}
+                  onClick={() => handleInputChange}
                   onKeyDown={async e => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();

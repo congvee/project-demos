@@ -3,7 +3,7 @@
 import { useQuery } from "convex/react"
 import z from "zod"
 import { api } from "../../../../../convex/_generated/api"
-import { userMutationState } from "@/hooks/useMutationState"
+import { useMutationState } from "@/hooks/useMutationState"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMemo } from "react"
@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button"
 import { CirclePlus, X } from "lucide-react"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card } from "@/components/ui/card"
 
@@ -27,7 +27,7 @@ const createGroupFormSchema = z.object({
 export default function CreateGroupDialog() {
   const friends = useQuery(api.friends.get);
 
-  const { mutate: createGroup, pending } = userMutationState(api.conversation.createGroup);
+  const { mutate: createGroup, pending } = useMutationState(api.conversation.createGroup);
 
   const form = useForm<z.infer<typeof createGroupFormSchema>>({
     resolver: zodResolver(createGroupFormSchema),

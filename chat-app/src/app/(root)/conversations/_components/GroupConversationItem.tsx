@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { Id } from "../../../../../convex/_generated/dataModel"
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 
 interface Props {

@@ -1,7 +1,7 @@
 "use client"
 
 import { useForm } from "react-hook-form";
-import { email, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { UserPlus } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { userMutationState } from "@/hooks/useMutationState";
+import { useMutationState } from "@/hooks/useMutationState";
 import { api } from "../../../../../convex/_generated/api";
 import { toast } from "sonner";
 import { ConvexError } from "convex/values";
@@ -22,7 +22,7 @@ const addFriendFormSchema = z.object({
 })
 
 export default function AddFriendDialog() {
-  const { mutate: createRequest, pending } = userMutationState(api.request.create);
+  const { mutate: createRequest, pending } = useMutationState(api.request.create);
 
   const form = useForm<z.infer<typeof addFriendFormSchema>>({
     resolver: zodResolver(addFriendFormSchema),

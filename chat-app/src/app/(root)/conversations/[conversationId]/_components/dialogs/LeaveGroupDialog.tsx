@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction } from "react";
 import { Id } from "../../../../../../../convex/_generated/dataModel";
-import { userMutationState } from "@/hooks/useMutationState";
+import { useMutationState } from "@/hooks/useMutationState";
 import { api } from "../../../../../../../convex/_generated/api";
 import { toast } from "sonner";
 import { ConvexError } from "convex/values";
@@ -21,7 +21,7 @@ export default function LeaveGroupDialog({
   setOpen
 }: Props) {
 
-  const { mutate: leaveGroup, pending } = userMutationState(api.conversation.leaveGroup);
+  const { mutate: leaveGroup, pending } = useMutationState(api.conversation.leaveGroup);
 
   async function handleLeaveGroup() {
     leaveGroup({ conversationId })

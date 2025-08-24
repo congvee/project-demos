@@ -1,13 +1,16 @@
-import { error } from "console";
+"use client"
+
 import { useMutation } from "convex/react";
 import { useState } from "react"
 
-export const userMutationState = (mutationToRun: any) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useMutationState = (mutationToRun: any) => {
   const [pending, setPending] = useState(false);
 
   const mutationFn = useMutation(mutationToRun);
 
-  const mutate = (payload: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const mutate = async (payload: any) => {
     setPending(true);
 
     return mutationFn(payload).then(res => {

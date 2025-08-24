@@ -3,7 +3,7 @@ import { Id } from "../../../../../convex/_generated/dataModel"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Check, User, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { userMutationState } from "@/hooks/useMutationState";
+import { useMutationState } from "@/hooks/useMutationState";
 import { api } from "../../../../../convex/_generated/api";
 import { toast } from "sonner";
 import { ConvexError } from "convex/values";
@@ -21,8 +21,8 @@ export default function Request({
   username,
   email
 }: Props) {
-  const {mutate: denyRequest, pending: denyPending} = userMutationState(api.request.deny);
-  const {mutate: acceptRequest, pending: acceptPending} = userMutationState(api.request.accept);
+  const {mutate: denyRequest, pending: denyPending} = useMutationState(api.request.deny);
+  const {mutate: acceptRequest, pending: acceptPending} = useMutationState(api.request.accept);
 
 
   return <Card className=" w-full p-2 flex flex-row items-center justify-between gap-2">
@@ -44,7 +44,7 @@ export default function Request({
     </div>
 
     <div className=" flex items-center gap-2">
-      <Button size="icon" disabled={denyPending} onClick={() => {
+      <Button size="icon" disabled={acceptPending} onClick={() => {
         acceptRequest({id})
           .then(() => {
             toast.success("Friend request accepted")

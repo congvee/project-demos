@@ -5,7 +5,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../../../../../convex/_generated/api";
 import { Id } from "../../../../../../../convex/_generated/dataModel";
 import Message from "./Message";
-import { userMutationState } from "@/hooks/useMutationState";
+import { useMutationState } from "@/hooks/useMutationState";
 import { useEffect } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -13,6 +13,7 @@ interface Props {
   members: {
     lastSeenMessageId?: Id<"messages">;
     username?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
   }[]
 }
@@ -26,7 +27,7 @@ export default function Body({
     id: conversationId as Id<"conversations">
   })
 
-  const { mutate: markRead, pending } = userMutationState(api.conversation.markRead);
+  const { mutate: markRead } = useMutationState(api.conversation.markRead);
 
   useEffect(() => {
     if (messages && members.length > 0) {
